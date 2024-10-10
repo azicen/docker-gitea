@@ -75,9 +75,11 @@ COPY --from=tool-build /gitea-src/environment-to-ini /usr/bin/environment-to-ini
 
 COPY ./root /
 
-RUN chmod 755 \
+RUN chmod 755 -R \
     /usr/bin/gitea \
-    /usr/bin/environment-to-ini
+    /usr/bin/environment-to-ini \
+    /etc/cont-init.d/* \
+    /etc/services.d/*
 
 VOLUME /config/gitea/custom /config/gitea/tmp /config/gitea/data
 
