@@ -1,0 +1,54 @@
+#!/usr/bin/with-contenv bash
+
+# 初始化环境变量
+export GITEA____APP_NAME=${GITEA____APP_NAME:-"$APP_NAME"}
+export GITEA____RUN_MODE=${GITEA____RUN_MODE:-"$RUN_MODE"}
+export GITEA____RUN_USER="abc"
+
+export GITEA____WORK_PATH=${GITEA____WORK_PATH:-"$WORK_PATH"}
+
+# ---
+
+export GITEA__server__PROTOCOL=${GITEA__server__PROTOCOL:-"http"}
+export GITEA__server__DOMAIN=${GITEA__server__DOMAIN:-"$DOMAIN"}
+export GITEA__server__SSH_DOMAIN=${GITEA__server__SSH_DOMAIN:-"$SSH_DOMAIN"}
+export GITEA__server__SSH_PORT=${GITEA__server__SSH_PORT:-"$SSH_PORT"}
+export SSH_LISTEN_PORT=${SSH_LISTEN_PORT:-"$SSH_PORT"}
+export GITEA__server__SSH_LISTEN_PORT=${GITEA__server__SSH_LISTEN_PORT:-"$SSH_LISTEN_PORT"}
+export GITEA__server__HTTP_PORT=${GITEA__server__HTTP_PORT:-"$HTTP_PORT"}
+export ROOT_URL=${ROOT_URL:-"$GITEA__server__PROTOCOL://$GITEA__server__DOMAIN:$GITEA__server__HTTP_PORT"}
+export GITEA__server__ROOT_URL=${GITEA__server__ROOT_URL:-"$ROOT_URL"}
+
+export GITEA__server__LFS_START_SERVER=${GITEA__server__LFS_START_SERVER:-"$LFS_START_SERVER"}
+
+export GITEA__security__INSTALL_LOCK=${GITEA__security__INSTALL_LOCK:-"$INSTALL_LOCK"}
+export GITEA__security__SECRET_KEY=${GITEA__security__SECRET_KEY:-"$SECRET_KEY"}
+
+export GITEA__service__DISABLE_REGISTRATION=${GITEA__service__DISABLE_REGISTRATION:-"$DISABLE_REGISTRATION"}
+export GITEA__service__REQUIRE_SIGNIN_VIEW=${GITEA__service__REQUIRE_SIGNIN_VIEW:-"$REQUIRE_SIGNIN_VIEW"}
+
+# ---
+
+export GITEA__database__DB_TYPE=${GITEA__database__DB_TYPE:-"$DB_TYPE"}
+export GITEA__database__DB_HOST=${GITEA__database__DB_HOST:-"$DB_HOST"}
+export GITEA__database__DB_NAME=${GITEA__database__DB_NAME:-"$DB_NAME"}
+export GITEA__database__DB_USER=${GITEA__database__DB_USER:-"$DB_USER"}
+export GITEA__database__DB_PASSWD=${GITEA__database__DB_PASSWD:-"$DB_PASSWD"}
+
+# ---
+
+export GITEA_REPOSITORY_ROOT=${GITEA_REPOSITORY_ROOT:-"$GITEA____WORK_PATH/data/git/repositories"}
+export GITEA__repository__ROOT=${GITEA__repository__ROOT:-"$GITEA_REPOSITORY_ROOT"}
+
+export GITEA_LFS_PATH=${GITEA_LFS_PATH:-"$GITEA____WORK_PATH/data/git/lfs"}
+export GITEA__lfs__PATH=${GITEA__lfs__PATH:-"$GITEA_LFS_PATH"}
+
+export GITEA_LOG_ROOT_PATH=${GITEA_LOG_ROOT_PATH:-"$GITEA____WORK_PATH/tmp/log"}
+export GITEA__log__ROOT_PATH=${GITEA__log__ROOT_PATH:-"$GITEA_LOG_ROOT_PATH"}
+export GITEA__log__MODE=${GITEA__log__MODE:-"console"}
+export GITEA__log__LEVEL=${GITEA__log__LEVEL:-"Info"}
+
+# ---
+
+# Replace app.ini settings with env variables in the form GITEA__SECTION_NAME__KEY_NAME
+environment-to-ini --config "$CONF_FILE"

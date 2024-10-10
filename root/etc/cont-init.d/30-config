@@ -1,0 +1,16 @@
+#!/usr/bin/with-contenv bash
+
+export GITEA____WORK_PATH=${GITEA____WORK_PATH:-"$WORK_PATH"}
+mkdir -p "$GITEA____WORK_PATH"
+
+# 复制配置
+if [ ! -d "$GITEA____WORK_PATH/conf" ]; then
+    echo "Copy default config..."
+    cp -r -u /defaults/conf "$GITEA____WORK_PATH/conf"
+fi
+
+# 复制资源
+if [ ! -d "$GITEA____WORK_PATH/custom" ]; then
+    echo "Copy default custom..."
+    cp -r -u /defaults/custom "$GITEA____WORK_PATH/custom"
+fi
