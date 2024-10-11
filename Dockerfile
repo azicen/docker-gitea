@@ -71,7 +71,7 @@ RUN apt update && apt install -y --no-install-recommends \
     apt clean
 
 COPY --from=download gitea /usr/bin/gitea
-COPY --from=tool-build /gitea-src/environment-to-ini /usr/bin/environment-to-ini
+COPY --from=build-tool /gitea-src/environment-to-ini /usr/bin/environment-to-ini
 
 COPY ./root /
 
