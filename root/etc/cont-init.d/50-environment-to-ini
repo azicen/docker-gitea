@@ -30,10 +30,10 @@ export GITEA__service__REQUIRE_SIGNIN_VIEW=${GITEA__service__REQUIRE_SIGNIN_VIEW
 # ---
 
 export GITEA__database__DB_TYPE=${GITEA__database__DB_TYPE:-"$DB_TYPE"}
-export GITEA__database__DB_HOST=${GITEA__database__DB_HOST:-"$DB_HOST"}
-export GITEA__database__DB_NAME=${GITEA__database__DB_NAME:-"$DB_NAME"}
-export GITEA__database__DB_USER=${GITEA__database__DB_USER:-"$DB_USER"}
-export GITEA__database__DB_PASSWD=${GITEA__database__DB_PASSWD:-"$DB_PASSWD"}
+export GITEA__database__HOST=${GITEA__database__HOST:-"$DB_HOST"}
+export GITEA__database__NAME=${GITEA__database__NAME:-"$DB_NAME"}
+export GITEA__database__USER=${GITEA__database__USER:-"$DB_USER"}
+export GITEA__database__PASSWD=${GITEA__database__PASSWD:-"$DB_PASSWD"}
 
 # ---
 
