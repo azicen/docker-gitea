@@ -49,6 +49,7 @@ ENV APP_NAME="Gitea on debian" \
     SECRET_KEY= \
     DISABLE_REGISTRATION=false \
     REQUIRE_SIGNIN_VIEW=false \
+    HOME=/config \
     WORK_PATH=/config/gitea \
     CONF_FILE=/config/gitea/conf/app.ini
 
@@ -62,7 +63,7 @@ RUN apt update && apt install -y --no-install-recommends \
         git-lfs \
         python3 \
         python3-pip && \
-    pip install -i https://mirrors.ustc.edu.cn/pypi/web/simple \
+    pip install \
         jupyter \
         nbconvert && \
     apt autoremove -y && \
@@ -80,6 +81,6 @@ RUN chmod 755 -R \
     /etc/cont-init.d/* \
     /etc/services.d/*
 
-VOLUME /config/gitea/custom /config/gitea/tmp /config/gitea/data
+VOLUME /config/gitea/conf /config/gitea/custom /config/gitea/data /config/gitea/tmp
 
 EXPOSE 2222 3000
