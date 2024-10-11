@@ -9,7 +9,6 @@ on:
       - v*
 
 env:
-  ARCH: amd64
   REGISTRY: ${{ vars.REGISTRY }}
   IMAGE: ${{ vars.IMAGE }}
 
@@ -33,7 +32,6 @@ jobs:
           echo "REGISTRY:           ${{ env.REGISTRY }}"
           echo "REGISTRY_USERNAME:  ${{ env.REGISTRY_USERNAME }}"
           echo "IMAGE:              ${{ env.IMAGE }}"
-          echo "ARCH:               ${{ env.ARCH }}"
           echo "GIT_TAG_VERSION:    ${{ env.GIT_TAG_VERSION }}"
 
       - name: 检出代码
@@ -95,10 +93,9 @@ jobs:
           context: .
           file: ./Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
-          platforms: linux/amd64
+          platforms: linux/arm64,linux/amd64
           push: true
           build-args: |
-            GOARCH=${{ env.ARCH }}
             GITEA_VERSION=${{ env.GIT_TAG_VERSION }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

@@ -1,13 +1,11 @@
-ARG DOCKER_MIRROR
-ARG GHCR_MIRROR
-
 FROM library/debian:12-slim AS download
 
-ARG GOARCH
+ARG TARGETOS
+ARG TARGETARCH
 ARG GITEA_VERSION
 
-ADD https://dl.gitea.com/gitea/$GITEA_VERSION/gitea-$GITEA_VERSION-linux-$GOARCH gitea
-ADD https://dl.gitea.com/gitea/$GITEA_VERSION/gitea-$GITEA_VERSION-linux-$GOARCH.sha256 gitea.sha256
+ADD https://dl.gitea.com/gitea/$GITEA_VERSION/gitea-$GITEA_VERSION-$TARGETOS-$TARGETARCH gitea
+ADD https://dl.gitea.com/gitea/$GITEA_VERSION/gitea-$GITEA_VERSION-$TARGETOS-$TARGETARCH.sha256 gitea.sha256
 ADD https://dl.gitea.com/gitea/$GITEA_VERSION/gitea-src-$GITEA_VERSION.tar.gz gitea-src.tar.gz
 
 RUN tar -zxf gitea-src.tar.gz && \
@@ -17,15 +15,16 @@ RUN echo "$(cat gitea.sha256 | cut -d ' ' -f 1)  gitea" | sha256sum -c || (echo 
 
 # ---
 
-FROM library/golang:1.22 AS tool-build
+FROM library/golang:1.23 AS tool-build
 
-ARG GOARCH
+ARG TARGETOS
+ARG TARGETARCH
 
 COPY --from=download gitea-src /gitea-src
 
 # Begin env-to-ini build
 RUN cd /gitea-src && \
-	GOOS=linux GOARCH=$GOARCH go build -o ./environment-to-ini contrib/environment-to-ini/environment-to-ini.go
+	GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o ./environment-to-ini contrib/environment-to-ini/environment-to-ini.go
 
 # ---
 
