@@ -67,9 +67,13 @@ jobs:
 
       - name: 检查容器元数据
         run: |
-          echo "docker iamge tags:    ${{ steps.meta.outputs.tags }}"
-          echo "docker iamge labels:  ${{ steps.meta.outputs.labels }}"
           echo "docker iamge version: ${{ steps.meta.outputs.version }}"
+          echo ""
+          echo "docker iamge tags:"
+          echo "${{ steps.meta.outputs.tags }}"
+          echo ""
+          echo "docker iamge labels:"
+          echo "${{ steps.meta.outputs.labels }}"
 
       # 缓存 Docker 镜像以加速构建
       - name: 配置容器缓存层
@@ -88,13 +92,14 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 构建容器并推送注册表
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           platforms: linux/arm64,linux/amd64
           push: true
+          provenance: false
           build-args: |
             GITEA_VERSION=${{ env.GIT_TAG_VERSION }}
           tags: ${{ steps.meta.outputs.tags }}

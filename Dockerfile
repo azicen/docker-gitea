@@ -1,4 +1,4 @@
-FROM library/debian:12-slim AS download
+FROM --platform=$BUILDPLATFORM library/debian:12-slim AS download
 
 ARG TARGETOS
 ARG TARGETARCH
@@ -15,7 +15,7 @@ RUN echo "$(cat gitea.sha256 | cut -d ' ' -f 1)  gitea" | sha256sum -c || (echo 
 
 # ---
 
-FROM library/golang:1.23 AS tool-build
+FROM --platform=$BUILDPLATFORM library/golang:1.23 AS build-tool
 
 ARG TARGETOS
 ARG TARGETARCH
@@ -28,7 +28,7 @@ RUN cd /gitea-src && \
 
 # ---
 
-FROM ghcr.io/linuxserver/baseimage-debian:bookworm
+FROM --platform=$TARGETPLATFORM ghcr.io/linuxserver/baseimage-debian:bookworm AS release
 
 ENV APP_NAME="Gitea on debian" \
     RUN_MODE=prod \
