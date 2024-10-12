@@ -1,0 +1,33 @@
+#!/usr/bin/with-contenv bash
+
+export GITEA____WORK_PATH=${GITEA____WORK_PATH:-"$WORK_PATH"}
+mkdir -p "$GITEA____WORK_PATH"
+
+
+# 复制配置文件
+if [ ! -f "$CONF_FILE" ]; then
+    echo "Copy default config to $CONF_FILE"
+    export CONF_DIR=$(dirname "$CONF_FILE")
+    mkdir -p "$CONF_DIR"
+    cp -r -u /defaults/conf/app.ini "$CONF_FILE"
+fi
+
+
+# 复制资源
+export $CUSTOM_DOCX_DIR="$GITEA____WORK_PATH/custom/docx"
+if [ ! -d "$CUSTOM_DOCX_DIR" ]; then
+    echo "Copy default custom docx to $CUSTOM_DOCX_DIR"
+    cp -r -u /defaults/custom/docx "$CUSTOM_DOCX_DIR"
+fi
+
+export $CUSTOM_PUBLIC_DIR="$GITEA____WORK_PATH/custom/public"
+if [ ! -d "$CUSTOM_PUBLIC_DIR" ]; then
+    echo "Copy default custom public to $CUSTOM_PUBLIC_DIR"
+    cp -r -u /defaults/custom/public "$CUSTOM_PUBLIC_DIR"
+fi
+
+export $CUSTOM_TEMPLATE_DIR="$GITEA____WORK_PATH/custom/template"
+if [ ! -d "$CUSTOM_TEMPLATE_DIR" ]; then
+    echo "Copy default custom template to $CUSTOM_TEMPLATE_DIR"
+    cp -r -u /defaults/custom/template "$CUSTOM_TEMPLATE_DIR"
+fi
