@@ -30,6 +30,7 @@ RUN cd /gitea-src && \
 
 FROM --platform=$TARGETPLATFORM ghcr.io/linuxserver/baseimage-debian:bookworm AS release
 
+# dockerignore: Sensitive data is not used here
 ENV APP_NAME="Gitea on debian" \
     RUN_MODE=prod \
     DOMAIN=localhost \
@@ -38,15 +39,15 @@ ENV APP_NAME="Gitea on debian" \
     SSH_LISTEN_PORT= \
     DISABLE_SSH=false \
     HTTP_PORT=3000 \
-    ROOT_URL= \
+    ROOT_URL="" \
     LFS_START_SERVER=false \
     DB_TYPE=sqlite3 \
     DB_HOST=localhost:3306 \
     DB_NAME=gitea \
     DB_USER=root \
-    DB_PASSWD= \
+    DB_PASSWD="" \
     INSTALL_LOCK=false \
-    SECRET_KEY= \
+    SECRET_KEY="" \
     DISABLE_REGISTRATION=false \
     REQUIRE_SIGNIN_VIEW=false \
     HOME=/config \
