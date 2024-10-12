@@ -28,7 +28,7 @@ RUN cd /gitea-src && \
 
 # ---
 
-FROM --platform=$TARGETPLATFORM ghcr.io/linuxserver/baseimage-debian:bookworm AS release
+FROM ghcr.io/linuxserver/baseimage-debian:bookworm AS release
 
 # dockerignore: Sensitive data is not used here
 ENV APP_NAME="Gitea on debian" \
