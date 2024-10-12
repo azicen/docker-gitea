@@ -55,26 +55,6 @@ jobs:
           echo "Flags:     ${{ steps.buildx.outputs.flags }}"
           echo "Platforms: ${{ steps.buildx.outputs.platforms }}"
 
-      # 根据输入自动生成 tag 和 label 等数据
-      - name: 构建容器元数据
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE }}
-          tags: |
-            type=match,pattern=v(.*),group=1
-            type=match,pattern=v(\d.\d),group=1
-
-      - name: 检查容器元数据
-        run: |
-          echo "docker iamge version: ${{ steps.meta.outputs.version }}"
-          echo ""
-          echo "docker iamge tags:"
-          echo "${{ steps.meta.outputs.tags }}"
-          echo ""
-          echo "docker iamge labels:"
-          echo "${{ steps.meta.outputs.labels }}"
-
       # 缓存 Docker 镜像以加速构建
       - name: 配置容器缓存层
         uses: actions/cache@v4
@@ -91,13 +71,35 @@ jobs:
           username: ${{ env.REGISTRY_USERNAME }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # 根据输入自动生成 tag 和 label 等数据
+      - name: 构建容器元数据
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+
+      - name: 检查容器元数据
+        run: |
+          echo "docker iamge version: ${{ steps.meta.outputs.version }}"
+          echo ""
+          echo "docker iamge tags:"
+          echo "${{ steps.meta.outputs.tags }}"
+          echo ""
+          echo "docker iamge labels:"
+          echo "${{ steps.meta.outputs.labels }}"
+
       - name: 构建容器并推送注册表
         uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
-          platforms: linux/arm64,linux/amd64
+          platforms: |
+            linux/arm64
+            linux/amd64
           push: true
           provenance: false
           build-args: |
