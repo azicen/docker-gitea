@@ -100,7 +100,7 @@ jobs:
           platforms: |
             linux/arm64
             linux/amd64
-          push: true
+          outputs: type=registry,push=true,compression=zstd,compression-level=19
           provenance: false
           build-args: |
             GITEA_VERSION=${{ env.GIT_TAG_VERSION }}
