@@ -13,6 +13,7 @@ services:
   gitea:
     image: ghcr.io/azicen/gitea:latest
     container_name: gitea
+    hostname: gitea
     environment:
       TZ: Asia/Shanghai
       PUID: 1000
@@ -20,7 +21,7 @@ services:
 
       DOMAIN: gitea.example.com
       SSH_DOMAIN: gitea.example.com
-      SSH_PORT: 2222
+      SSH_PORT: 22
       SSH_LISTEN_PORT: 2222
       HTTP_PORT: 3000
       ROOT_URL: https://gitea.example.com
@@ -40,9 +41,9 @@ services:
 
     restart: always
     volumes:
-      - ./custom:/app/gitea/custom
-      - ./data:/app/gitea/data
-      - ./tmp:/config/gitea/tmp
+      - ./custom:/config/custom
+      - ./data:/config/data
+      - ./tmp:/config/tmp
     ports:
       - "3000:3000"
       - "2222:2222"

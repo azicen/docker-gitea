@@ -51,8 +51,8 @@ ENV APP_NAME="Gitea on debian" \
     DISABLE_REGISTRATION=false \
     REQUIRE_SIGNIN_VIEW=false \
     HOME=/config \
-    WORK_PATH=/config/gitea \
-    CONF_FILE=/config/gitea/conf/app.ini
+    WORK_PATH=/config \
+    CONF_FILE=/config/conf/app.ini
 
 ENV PYTHONUNBUFFERED=1 PIP_BREAK_SYSTEM_PACKAGES=1
 RUN apt update && apt install -y --no-install-recommends \
@@ -82,6 +82,6 @@ RUN chmod 755 -R \
     /etc/cont-init.d/* \
     /etc/services.d/*
 
-VOLUME /config/gitea/conf /config/gitea/custom /config/gitea/data /config/gitea/tmp
+VOLUME /config/conf /config/custom /config/data /config/tmp
 
 EXPOSE 2222 3000
