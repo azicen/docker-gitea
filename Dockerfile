@@ -8,14 +8,15 @@ ADD https://dl.gitea.com/gitea/$GITEA_VERSION/gitea-$GITEA_VERSION-$TARGETOS-$TA
 ADD https://dl.gitea.com/gitea/$GITEA_VERSION/gitea-$GITEA_VERSION-$TARGETOS-$TARGETARCH.sha256 gitea.sha256
 ADD https://dl.gitea.com/gitea/$GITEA_VERSION/gitea-src-$GITEA_VERSION.tar.gz gitea-src.tar.gz
 
-RUN tar -zxf gitea-src.tar.gz && \
-    mv gitea-src-$GITEA_VERSION gitea-src
+RUN set -ex; \
+    tar -zxf gitea-src.tar.gz; \
+    mv gitea-src-$GITEA_VERSION gitea-src;
 
 RUN echo "$(cat gitea.sha256 | cut -d ' ' -f 1)  gitea" | sha256sum -c || (echo "SHA256 校验失败, 停止构建." && false)
 
 # ---
 
-FROM --platform=$BUILDPLATFORM library/golang:1.23 AS build-tool
+FROM --platform=$BUILDPLATFORM library/golang:latest AS build-tool
 
 ARG TARGETOS
 ARG TARGETARCH
@@ -23,7 +24,8 @@ ARG TARGETARCH
 COPY --from=download gitea-src /gitea-src
 
 # Begin env-to-ini build
-RUN cd /gitea-src && \
+RUN set -ex; \
+    cd /gitea-src; \
 	GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o ./environment-to-ini contrib/environment-to-ini/environment-to-ini.go
 
 # ---
@@ -55,7 +57,10 @@ ENV APP_NAME="Gitea on debian" \
     CONF_FILE=/config/conf/app.ini
 
 ENV PYTHONUNBUFFERED=1 PIP_BREAK_SYSTEM_PACKAGES=1
-RUN apt update && apt install -y --no-install-recommends \
+RUN set -ex; \
+    apt update; \
+    \
+    apt install -y --no-install-recommends \
         ca-certificates \
         iproute2 \
         iputils-ping \
@@ -63,12 +68,14 @@ RUN apt update && apt install -y --no-install-recommends \
         git \
         git-lfs \
         python3 \
-        python3-pip && \
+        python3-pip; \
+    \
     pip install \
         jupyter \
-        nbconvert && \
-    apt autoremove -y && \
-    apt autoclean -y && \
+        nbconvert; \
+    \
+    apt autoremove -y; \
+    apt autoclean -y; \
     apt clean
 
 COPY --from=download gitea /usr/bin/gitea
