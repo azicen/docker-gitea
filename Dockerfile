@@ -89,6 +89,6 @@ RUN chmod 755 -R \
     /etc/cont-init.d/* \
     /etc/services.d/*
 
-VOLUME /config/conf /config/custom /config/data /config/tmp
+VOLUME /config
 
 EXPOSE 2222 3000
