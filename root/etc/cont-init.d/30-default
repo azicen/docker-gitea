@@ -14,19 +14,19 @@ fi
 
 
 # 复制资源
-export $CUSTOM_DOCX_DIR="$GITEA____WORK_PATH/custom/docx"
+export CUSTOM_DOCX_DIR="$GITEA____WORK_PATH/custom/docx"
 if [ ! -d "$CUSTOM_DOCX_DIR" ]; then
     echo "Copy default custom docx to $CUSTOM_DOCX_DIR"
     cp -r -u /defaults/custom/docx "$CUSTOM_DOCX_DIR"
 fi
 
-export $CUSTOM_PUBLIC_DIR="$GITEA____WORK_PATH/custom/public"
+export CUSTOM_PUBLIC_DIR="$GITEA____WORK_PATH/custom/public"
 if [ ! -d "$CUSTOM_PUBLIC_DIR" ]; then
     echo "Copy default custom public to $CUSTOM_PUBLIC_DIR"
     cp -r -u /defaults/custom/public "$CUSTOM_PUBLIC_DIR"
 fi
 
-export $CUSTOM_TEMPLATE_DIR="$GITEA____WORK_PATH/custom/template"
+export CUSTOM_TEMPLATE_DIR="$GITEA____WORK_PATH/custom/template"
 if [ ! -d "$CUSTOM_TEMPLATE_DIR" ]; then
     echo "Copy default custom template to $CUSTOM_TEMPLATE_DIR"
     cp -r -u /defaults/custom/template "$CUSTOM_TEMPLATE_DIR"
